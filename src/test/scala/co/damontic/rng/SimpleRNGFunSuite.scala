@@ -76,4 +76,17 @@ class SimpleRNGFunSuite extends FunSuite {
     assert(int10.isInstanceOf[Int])
   }
 
+  test("SimpleRNG.nonNegativeLessThan_v3(100) returns always a value less than 100") {
+    val rng = SimpleRNG(Int.MaxValue)
+
+    val (random, rng2) = SimpleRNG.nonNegativeLessThan_v3(100)(rng)
+    assert(random >= 0 && random < 100)
+    
+    val (random2, rng3) = SimpleRNG.nonNegativeLessThan_v3(100)(rng2)
+    assert(random2 >= 0 && random2 < 100)
+    
+    val (random3, rng4) = SimpleRNG.nonNegativeLessThan_v3(100)(rng3)
+    assert(random3 >= 0 && random3 < 100)
+  }
+
 }
