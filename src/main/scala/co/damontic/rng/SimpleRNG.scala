@@ -4,7 +4,7 @@ trait RNG {
   def nextInt: (Int, RNG)
 }
 
-case class SimpleRNG(seed: Long) extends RNG {
+class SimpleRNG(val seed: Long) extends RNG {
 
   override def nextInt: (Int, RNG) = {
     val newSeed = (seed * 0x5DEECE66DL + 0xBL) & 0xFFFFFFFFFFFFL
@@ -16,6 +16,8 @@ case class SimpleRNG(seed: Long) extends RNG {
 }
 
 object SimpleRNG {
+  
+  def apply(seed: Long): SimpleRNG = new SimpleRNG(seed)
   
   def randomPair(rng: RNG): ((Int, Int), RNG) = {
     val (randomNumber1, rng2) = rng.nextInt
@@ -94,9 +96,9 @@ object SimpleRNG {
   /*  excercise 6.5
    *   Use map to reimplement double in a more elegant way. See exercise 6.2.
    */
-  def double(rng: RNG): (Double, RNG) = {
-    
-  }
+//  def double(rng: RNG): (Double, RNG) = {
+//    
+//  }
 
   
 }

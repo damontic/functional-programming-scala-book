@@ -4,8 +4,10 @@ import org.scalatest.FunSuite
 
 class SimpleRNGFunSuite extends FunSuite {
 
+  import co.damontic.rng.SimpleRNG._
+  
   test("SimpleRNG(42).nextInt = 16159453") {
-    val (result, nextRNG) = co.damontic.rng.SimpleRNG(42).nextInt
+    val (result, nextRNG) = SimpleRNG(42).nextInt
     assert(result === 16159453)
   }
 
