@@ -46,9 +46,34 @@ class SimpleRNGFunSuite extends FunSuite {
 
   test("SimpleRNG.double in [0; 1[ ") {
     val rng1 = SimpleRNG(Int.MaxValue)
-    val randomMonad : Rand[Double] = SimpleRNG.double2(rng1)
+    val randomMonad: Rand[Double] = SimpleRNG.double2(rng1)
     val (randomDouble, rng2) = randomMonad(rng1)
-    assert( randomDouble >= 0 && randomDouble < 1)
+    assert(randomDouble >= 0 && randomDouble < 1)
+  }
+
+  test("SimpleRNG.sequence -> SimpleRNG.randIntDoubleInt") {
+    val rng = SimpleRNG(Int.MaxValue)
+    val (List(int1, double1, int2), nextRNG) = SimpleRNG.randIntDoubleInt(rng)
+
+    assert(int1.isInstanceOf[Int])
+    assert(double1.isInstanceOf[Double])
+    assert(int2.isInstanceOf[Int])
+  }
+
+  test("SimpleRNG.ints2(10) returns 10 ints") {
+    val rng = SimpleRNG(Int.MaxValue)
+    val (List(int1, int2, int3, int4, int5, int6, int7, int8, int9, int10), nextRNG) = SimpleRNG.ints2(10)(rng)
+
+    assert(int1.isInstanceOf[Int])
+    assert(int2.isInstanceOf[Int])
+    assert(int3.isInstanceOf[Int])
+    assert(int4.isInstanceOf[Int])
+    assert(int5.isInstanceOf[Int])
+    assert(int6.isInstanceOf[Int])
+    assert(int7.isInstanceOf[Int])
+    assert(int8.isInstanceOf[Int])
+    assert(int9.isInstanceOf[Int])
+    assert(int10.isInstanceOf[Int])
   }
 
 }

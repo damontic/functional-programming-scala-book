@@ -43,10 +43,14 @@ object SimpleRNG {
    * use Int.MaxValue to obtain the maximum positive integer value, and you can use
    * x.toDouble to convert an x: Int to a Double.
    */
-    def double(rng: RNG): (Double, RNG) = {
-      val (randomInt, rng2) = SimpleRNG.nonNegativeInt(rng)
-      ((randomInt / Int.MaxValue.toDouble), rng2)
-    }
+  def double(rng: RNG): (Double, RNG) = {
+    val (randomInt, rng2) = SimpleRNG.nonNegativeInt(rng)
+    ((randomInt / Int.MaxValue.toDouble), rng2)
+  }
+
+  def int(rng: RNG): (Int, RNG) = {
+    rng.nextInt
+  }
 
   /**
    * exercise 6.3
@@ -137,6 +141,72 @@ object SimpleRNG {
       i => i / Int.MaxValue.toDouble
     }
     map(s)(f)
+  }
+
+  /**
+   * excercise 6.6
+   * Write the implementation of map2 based on the following signature. This function
+   * takes two actions, ra and rb , and a function f for combining their results, and returns
+   * a new action that combines them:
+   */
+  def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
+    rng =>
+      {
+        val (randomA, rng1) = ra(rng)
+        val (randomB, rng2) = rb(rng1)
+        (f(randomA, randomB), rng2)
+      }
+  }
+
+  /**
+   * We only have to write the map2 combinator once, and then we can use it to combine
+   * arbitrary RNG state actions. For example, if we have an action that generates values of
+   * type A and an action to generate values of type B, then we can combine them into one
+   * action that generates pairs of both A and B :
+   */
+  def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] =
+    map2(ra, rb)((_, _))
+
+  val randIntDouble: Rand[(Int, Double)] = both(int, double)
+
+  val randDoubleInt: Rand[(Double, Int)] = both(double, int)
+
+  /**
+   * excercise 6.7: hard
+   * If you can combine two RNG transitions, you should be able to combine a whole
+   * list of them. Implement sequence for combining a List of transitions into a single
+   * transition. Use it to reimplement the ints function you wrote before. For the latter,
+   * you can use the standard library function List.fill(n)(x) to make a list with x repeated n times.
+   */
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = {
+    rng =>
+      {
+
+        def helper(actualList: List[A], counter: Int, actualRNG: RNG): (List[A], RNG) = {
+          if (counter == fs.size) (actualList, actualRNG)
+          else {
+            val (random, nextRNG) = fs(counter)(actualRNG)
+            helper(random :: actualList, counter + 1, nextRNG)
+          }
+        }
+        helper(Nil, 0, rng)
+      }
+  }
+
+  val randIntDoubleInt: Rand[List[AnyVal]] = sequence(List(int, double, int))
+
+  /**
+   *
+   */
+  def ints2(count: Int)(rng: RNG): (List[Int], RNG) = {
+
+    val fs : List[Rand[Int]] = List.fill(count)(
+      rng_1 => {
+        rng_1.nextInt
+      }    
+    )
+    sequence(fs)(rng)
+
   }
 
 }
