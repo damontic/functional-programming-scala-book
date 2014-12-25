@@ -1,5 +1,5 @@
 import org.scalatest.FunSuite
-import Fibonacci.fib
+import co.damontic.chapter2.fibonacci.Fibonacci.fib
 
 /**
  * Created by david on 1/11/14.

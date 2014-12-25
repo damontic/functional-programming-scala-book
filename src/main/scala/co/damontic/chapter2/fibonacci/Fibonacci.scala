@@ -1,8 +1,10 @@
+package co.damontic.chapter2.fibonacci
+
 /**
  * Created by david on 1/11/14.
  */
 object Fibonacci {
-  def fib( n : Int )  = {
+  def fib( n : Int ) : Int  = {
     if(n == 0) 0
     else if(n == 1) 1
     else{
