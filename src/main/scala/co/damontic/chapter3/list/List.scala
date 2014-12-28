@@ -32,15 +32,9 @@ object List {
     }
     loop(1, list)
   }
-  def dropWhile[A](list : List[A], f : A => Boolean) : List[A] = {
-    def loop(newList : List[A]) : List[A] = newList match {
-      case Nil => Nil
-      case Cons(head, tail) => {
-        if(f(head)) loop(tail)
-        else newList
-      }
-    }
-    loop(list)
+  def dropWhile[A](list : List[A], f : A => Boolean) : List[A] = list match {
+    case Cons(h,t) => if(f(h)) dropWhile(t, f) else list
+    case _ => list
   }
   def append[A](firstList : List[A], secondList : List[A]) : List[A] = firstList match {
     case Nil => secondList
