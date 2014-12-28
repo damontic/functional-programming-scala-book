@@ -26,4 +26,29 @@ class ListFunTest extends FunSuite {
     assert(x === 3)
   }
 
+  test("List.tail(List(1,2,3,4,5))===List(2,3,4,5)") {
+    val lista = List(1,2,3,4,5)
+    assert(List.tail(lista) === List(2,3,4,5))
+  }
+
+  test("List.setHead(List(1,2,3,4,5), 8)===List(8,2,3,4,5)") {
+    val lista = List(1,2,3,4,5)
+    assert(List.setHead(lista, 8) === List(8,2,3,4,5))
+  }
+
+  test("List.drop(List(1,2,3,4,5), 3)===List(4,5)") {
+    val lista = List(1,2,3,4,5)
+    assert(List.drop(lista, 3) === List(4,5))
+  }
+
+  test("List.dropWhile(List(2,4,5,8), isPair)===List(5,8)") {
+    val lista = List(2,4,5,8)
+    val isPair : Int => Boolean = x => if( x % 2 == 0 ) true else false
+    assert(List.dropWhile(lista, isPair) === List(5,8))
+  }
+
+  test("List.init(List(2,4,5,8))===List(2,4,5)") {
+    val lista = List(2,4,5,8)
+    assert(List.init(lista) === List(2,4,5))
+  }
 }
